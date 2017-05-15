@@ -14,7 +14,7 @@
 'use strict'
 
 import IdleJs from 'idle-js'
-import Sprite from 'src/Sprite'
+import Sprite from './src/Sprite'
 
 export default {
   components: {
