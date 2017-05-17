@@ -6,10 +6,7 @@ Vue component wrapper for idle-js
 :earth_africa: Installation
 ---------------------------
 
-    cd node_modules
-    git clone https://github.com/soixantecircuits/idle-vue.git
-    cd ..
-    npm install
+    npm install --save idle-vue
 
 :wave: Usage
 ------------
