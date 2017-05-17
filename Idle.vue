@@ -1,8 +1,8 @@
 <template>
-  <div class="idle" :class="{active: appIdle}">
+  <div class="idle-vue" :class="{active: appIdle}">
     <div class="overlay" :class="{active: appIdle}"></div>
     <sprite spriteId="touch"
-      :spriteSrc="require('assets/img/sprites/touch.png')"
+      :spriteSrc="require('./assets/img/sprites/touch.png')"
       :spriteW='180'
       :spriteH='215'
       ref='sprite'
@@ -87,14 +87,14 @@ function idleSync (store, eventEmitter, component, options) {
 </script>
 
 <style>
-  .idle {
+  .idle-vue {
     opacity: 0;
   }
-  .idle.active {
+  .idle-vue.active {
     pointer-events: all;
     opacity: 1;
   }
-  .idle .sprite {
+  .idle-vue .sprite {
     top: 700px;
     bottom: 0px;
     margin: auto;
@@ -106,7 +106,7 @@ function idleSync (store, eventEmitter, component, options) {
     z-index: 9999;
     -webkit-transform: scale(0.7);
   }
-  .idle .overlay {
+  .idle-vue .overlay {
     width: 100vw;
     height: 100vh;
     position: absolute;
@@ -119,7 +119,7 @@ function idleSync (store, eventEmitter, component, options) {
     /*-webkit-animation: SlowMo 5s cubic-bezier(0.77, 0, 0.175, 1) infinite;*/
     -webkit-transition: opacity 800ms cubic-bezier(0.77, 0, 0.175, 1);
   }
-  .idle .overlay.active {
+  .idle-vue .overlay.active {
     pointer-events: all;
     opacity: 0.6;
   }

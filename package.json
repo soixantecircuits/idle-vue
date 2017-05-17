@@ -5,6 +5,7 @@
   "repository": "https://github.com/soixantecircuits/idle-vue.git",
   "author": "Olivier FAURE <olivier.faure@epitech.eu>",
   "license": "MIT",
+  "main": "Idle.vue",
   "dependencies": {
     "idle-js": "^0.1.0",
     "vue": "^2.3.3",

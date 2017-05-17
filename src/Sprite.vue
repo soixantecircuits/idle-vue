@@ -99,7 +99,6 @@ export default {
     },
     stop(){
       window.cancelAnimationFrame(this.animationFrameId)
-      console.log('stop')
     },
     play(){
       this.spriteLoop()
