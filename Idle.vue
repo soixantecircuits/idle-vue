@@ -2,7 +2,7 @@
   <div class="idle-vue" :class="{active: appIdle}">
     <div class="overlay" :class="{active: appIdle}"></div>
     <sprite spriteId="touch"
-      :spriteSrc="require('./assets/img/sprites/touch.png')"
+      :spriteSrc="require('./assets/touch.png')"
       :spriteW='180'
       :spriteH='215'
       ref='sprite'

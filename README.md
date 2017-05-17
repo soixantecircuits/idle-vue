@@ -8,15 +8,18 @@ Vue component wrapper for idle-js
 
     cd node_modules
     git clone https://github.com/soixantecircuits/idle-vue.git
+    cd ..
+    npm install
 
 :wave: Usage
 ------------
 
-`idle-vue` is a Vue component meant to be used with Vue, vuex and webpack.
+`idle-vue` is a Vue component meant to be used with Vue, vuex and webpack or
+browserify. It can't be run as a node module (e.g. by running `node idle-vue`).
 
 ### Example
 
-    import IdleVue from 'idle-vue/Idle'
+    import IdleVue from 'idle-vue'
 
     const eventsHub = new Vue()
 
