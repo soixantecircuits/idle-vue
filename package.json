@@ -1,6 +1,6 @@
 {
   "name": "idle-vue",
-  "version": "2.0.0",
+  "version": "2.0.1-0",
   "description": "Vue component wrapper for idle-js",
   "repository": "https://github.com/soixantecircuits/idle-vue.git",
   "author": "Olivier FAURE <olivier.faure@epitech.eu>",
