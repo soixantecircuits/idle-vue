@@ -1,13 +1,15 @@
 {
   "name": "idle-vue",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Vue component wrapper for idle-js",
   "repository": "https://github.com/soixantecircuits/idle-vue.git",
   "author": "Olivier FAURE <olivier.faure@epitech.eu>",
   "license": "MIT",
-  "main": "Idle.vue",
+  "main": "index.js",
   "dependencies": {
-    "idle-js": "^0.1.0",
+    "idle-js": "^0.1.0"
+  },
+  "devDependencies": {
     "vue": "^2.3.3",
     "vuex": "^2.3.1"
   }
