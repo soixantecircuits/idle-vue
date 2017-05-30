@@ -9,29 +9,24 @@ export default {
   install (Vue, options) {
     const {
       eventEmitter,
-      store = Vue.$store,
+      store,
+      moduleName = 'idleVue',
 
       idleTime = 60 * 1000,
       events = ['mousemove', 'keydown', 'mousedown', 'touchstart'],
       keepTracking = true,
-      startAtIdle = true,
-      moduleName = 'idle'
+      startAtIdle = true
     } = options || {}
 
-    if (!options) {
-      throw Error("`options` must be a valid JS object")
+    if (!eventEmitter && !store) {
+      throw Error("Either `eventEmitter` or `store` must be passed in options")
     }
 
-    if (!eventEmitter) {
-      throw Error("`options.eventEmitter` must be a valid Vue instance")
-    }
-    if (store === undefined) {
-      throw Error("`options.store` is undefined\n"
-      + "`options.store` must be null or a valid Vuex store instance")
-    }
+    const onIdleStr = `${moduleName}_onIdle`
+    const onActiveStr = `${moduleName}_onActive`
 
     store && store.registerModule(moduleName, {
-      state: { isIdle: false },
+      state: { isIdle: startAtIdle },
 
       mutations: {
         [`${moduleName}/IDLE_CHANGED`]: function (state, isIdle) {
@@ -47,11 +42,11 @@ export default {
       startAtIdle,
 
       onIdle: () => {
-        eventEmitter.$emit(`${moduleName}_onIdle`)
+        eventEmitter && eventEmitter.$emit(onIdleStr)
         store && store.commit(`${moduleName}/IDLE_CHANGED`, true)
       },
       onActive: () => {
-        eventEmitter && eventEmitter.$emit(`${moduleName}_onActive`)
+        eventEmitter && eventEmitter.$emit(onActiveStr)
         store && store.commit(`${moduleName}/IDLE_CHANGED`, false)
       }
     })
@@ -61,24 +56,24 @@ export default {
 
     Vue.mixin({
       data () { return {
-        idleVue_onIdle: null,
-        idleVue_onActive: null
+        [onIdleStr]: null,
+        [onActiveStr]: null
       }},
       created () {
         const options = this.$options
 
-        this.idleVue_onIdle = () => options.onIdle && options.onIdle()
-        this.idleVue_onActive = () => options.onActive && options.onActive()
-        eventEmitter.$on(`${moduleName}_onIdle`, this.idleVue_onIdle)
-        eventEmitter.$on(`${moduleName}_onActive`, this.idleVue_onActive)
+        this[onIdleStr] = () => options.onIdle && options.onIdle()
+        this[onActiveStr] = () => options.onActive && options.onActive()
+        eventEmitter && eventEmitter.$on(onIdleStr, this[onIdleStr])
+        eventEmitter && eventEmitter.$on(onActiveStr, this[onActiveStr])
       },
       destroyed () {
-        eventEmitter.$off(`${moduleName}_onIdle`, this.idleVue_onIdle)
-        eventEmitter.$off(`${moduleName}_onActive`, this.idleVue_onActive)
+        eventEmitter && eventEmitter.$off(onIdleStr, this[onIdleStr])
+        eventEmitter && eventEmitter.$off(onActiveStr, this[onActiveStr])
       },
       computed: {
         isAppIdle () {
-          return store.state.idle
+          return store && store.state.idle
         }
       }
     })
