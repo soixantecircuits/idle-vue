@@ -22,9 +22,6 @@ export default {
       throw Error("Either `eventEmitter` or `store` must be passed in options")
     }
 
-    const onIdleStr = `${moduleName}_onIdle`
-    const onActiveStr = `${moduleName}_onActive`
-
     store && store.registerModule(moduleName, {
       state: { isIdle: startAtIdle },
 
@@ -34,6 +31,9 @@ export default {
         }
       }
     })
+
+    const onIdleStr = `${moduleName}_onIdle`
+    const onActiveStr = `${moduleName}_onActive`
 
     const idle = new IdleJs({
       idle: idleTime,
@@ -60,16 +60,20 @@ export default {
         [onActiveStr]: null
       }},
       created () {
-        const options = this.$options
-
-        this[onIdleStr] = () => options.onIdle && options.onIdle()
-        this[onActiveStr] = () => options.onActive && options.onActive()
-        eventEmitter && eventEmitter.$on(onIdleStr, this[onIdleStr])
-        eventEmitter && eventEmitter.$on(onActiveStr, this[onActiveStr])
+        if (eventEmitter && this.$options.onIdle) {
+          this[onIdleStr] = this.$options.onIdle.bind(this)
+          eventEmitter.$on(onIdleStr, this[onIdleStr])
+        }
+        if (eventEmitter && this.$options.onActive) {
+          this[onActiveStr] = this.$options.onActive.bind(this)
+          eventEmitter.$on(onActiveStr, this[onActiveStr])
+        }
       },
       destroyed () {
-        eventEmitter && eventEmitter.$off(onIdleStr, this[onIdleStr])
-        eventEmitter && eventEmitter.$off(onActiveStr, this[onActiveStr])
+        if (eventEmitter && this[onIdleStr])
+          eventEmitter.$off(onIdleStr, this[onIdleStr])
+        if (eventEmitter && this[onActiveStr])
+          eventEmitter.$off(onActiveStr, this[onActiveStr])
       },
       computed: {
         isAppIdle () {
