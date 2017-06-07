@@ -1,5 +1,5 @@
 <template>
-  <div class="idle-view" :class="{active: isIdle}">
+  <div class="idle-view" :class="{isIdle: isIdle}">
     <div class="overlay"></div>
     <sprite spriteId="touch"
       :spriteSrc="require('../assets/touch.png')"
