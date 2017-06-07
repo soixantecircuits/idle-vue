@@ -7,7 +7,7 @@
 <script>
 export default {
   name: 'sprite',
-  props:{
+  props: {
     spriteSrc: {
       type: String,
       default: ''
@@ -16,55 +16,54 @@ export default {
       type: String,
       default: 'sprite'
     },
-    spriteW:{
-      type:Number,
-      default:1
+    spriteW: {
+      type: Number,
+      default: 1
     },
-    spriteH:{
-      type:Number,
-      default:1
+    spriteH: {
+      type: Number,
+      default: 1
     },
-    spriteSpeed:{
-      type:Number,
-      default:1
+    spriteSpeed: {
+      type: Number,
+      default: 1
     }
   },
-  data(){
-    return{
-      visible:true,
-      frameIndex :0,
-			tickCount: 0,
-      frameLength:0,
-      ticksPerFrame:0,
+  data () {
+    return {
+      visible: true,
+      frameIndex: 0,
+      tickCount: 0,
+      frameLength: 0,
+      ticksPerFrame: 0,
       numberOfFrames: 0,
       frameRate: 20,
-      ctx:'',
-      canvas :'',
-      mySprite:'',
-      animationFrameId:-1
+      ctx: '',
+      canvas: '',
+      mySprite: '',
+      animationFrameId: -1
     }
   },
-  mounted(){
+  mounted () {
     let vm = this
     this.$nextTick(() => {
       vm.mySprite = new Image()
-      vm.mySprite.onload = (e)=>{
+      vm.mySprite.onload = e => {
         vm.spriteInit(e.target)
       }
       vm.mySprite.src = vm.spriteSrc
     })
   },
-  methods:{
-    spriteInit(img){
+  methods: {
+    spriteInit (img) {
       this.canvas = this.$el.querySelector(`#${this.spriteId}`)
       this.ctx = this.canvas.getContext('2d')
       this.ticksPerFrame = this.spriteSpeed
       this.frameLength = img.width
       this.numberOfFrames = img.width / this.spriteW
       this.spriteLoop()
-
     },
-    spriteUpdate(){
+    spriteUpdate () {
       this.tickCount ++
       if (this.tickCount > this.ticksPerFrame) {
         this.tickCount = 0
@@ -77,30 +76,25 @@ export default {
         }
       }
     },
-    spriteRender(){
-      this.ctx.clearRect(0, 0, this.spriteW, this.spriteH);
-		  // Draw the animation
-      var toDraw = this.frameIndex * this.spriteW
-		  this.ctx.drawImage(
-		    this.mySprite,
-		    toDraw ,
-		    0,
-		    this.spriteW,
-		    this.spriteH,
-		    0,
-		    0,
-		    this.spriteW,
-		    this.spriteH)
+    spriteRender () {
+      this.ctx.clearRect(0, 0, this.spriteW, this.spriteH)
+      // Draw the animation
+      const toDraw = this.frameIndex * this.spriteW
+      this.ctx.drawImage(
+        this.mySprite,
+        toDraw, 0, this.spriteW, this.spriteH,
+        0, 0, this.spriteW, this.spriteH
+      )
     },
-    spriteLoop(){
+    spriteLoop () {
       this.animationFrameId = window.requestAnimationFrame(this.spriteLoop)
       this.spriteUpdate()
       this.spriteRender()
     },
-    stop(){
+    stop () {
       window.cancelAnimationFrame(this.animationFrameId)
     },
-    play(){
+    play () {
       this.spriteLoop()
     }
   }

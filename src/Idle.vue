@@ -17,7 +17,7 @@ import Sprite from './Sprite'
 
 export default {
   components: {
-      Sprite
+    Sprite
   },
   onIdle () {
     this.$refs.sprite.play()
