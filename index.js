@@ -41,11 +41,11 @@ export default {
       keepTracking,
       startAtIdle,
 
-      onIdle: () => {
+      onIdle() {
         eventEmitter && eventEmitter.$emit(onIdleStr)
         store && store.commit(`${moduleName}/IDLE_CHANGED`, true)
       },
-      onActive: () => {
+      onActive() {
         eventEmitter && eventEmitter.$emit(onActiveStr)
         store && store.commit(`${moduleName}/IDLE_CHANGED`, false)
       }
@@ -77,7 +77,7 @@ export default {
       },
       computed: {
         isAppIdle () {
-          return store && store.state.idle
+          return store && store.state[moduleName].isIdle
         }
       }
     })

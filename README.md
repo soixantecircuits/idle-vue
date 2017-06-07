@@ -13,129 +13,171 @@ idle-vue
 :wave: Usage
 ------------
 
-In the root of your project, import the `idle-vue` plug-in, and add it to the Vue global with the following syntax:
+At the root of your project, just before creating your Vue application, import the `idle-vue` plug-in, and add it to the Vue global with the following code:
 
-    Vue.use(IdleVue, options)
+``` js
+import Vue from 'vue'
+import IdleVue from 'idle-vue'
+
+const options = { ... }
+
+Vue.use(IdleVue, options)
+```
+
+`Vue.use` is a Vue method that installs the given plugin (here, IdleVue), and passes it the given options.
+
+The above code does three things:
+
+* Add two hooks `onIdle` and `onActive` to all Vue objects
+
+* Add a computed value `isAppIdle` to all Vue objects
+
+* Create an `idle-view` component in every Vue object
 
 ### Hooks
 
-The plug-in adds two hooks to Vue: `onIdle` and `onActive`; those methods may be defined in any Vue object (components included), and will be called by the plug-in when the window respectively starts and stops idling.
+The plug-in adds two hooks to Vue: `onIdle` and `onActive`; those functions may be defined in any Vue object (components included), and will be called by the plug-in when the window respectively starts and stops idling.
 
-These hooks will not be called if the `options` object has no `eventEmitter` field.
+These hooks are not methods; they should be added directly at the Root of your component. These hooks will not be called if the `options` object has no `eventEmitter` field.
 
-#### Example - Js
+#### Example - `main.js`
 
-    import IdleVue from 'idle-vue'
+``` js
+import Vue from 'vue'
+import IdleVue from 'idle-vue'
 
-    const eventsHub = new Vue()
+const eventsHub = new Vue()
 
-    Vue.use(IdleVue, { eventEmitter: eventsHub })
+Vue.use(IdleVue, {
+  eventEmitter: eventsHub,
+  idleTime: 10000
+})
 
-    const vm = new Vue({
-      el: '#app',
-      data: {
-        messageStr: "Hello"
-      }
-      isIdle() {
-        this.messageStr = "ZZZ"
-      }
-      isActive() {
-        this.messageStr = "Hello"
-      }
-    })
+const vm = new Vue({
+  el: '#app',
+  data: {
+    messageStr: "Hello"
+  },
+  onIdle() {
+    this.messageStr = "ZZZ"
+  },
+  onActive() {
+    this.messageStr = "Hello"
+  }
+})
+```
 
-#### Example - Html
+#### Example - `index.html`
 
-    <div id=app>
-      <p>
-        {{ messageStr }}
-      </p>
-    </div>
+``` html
+<div id=app>
+  <p>
+    {{ messageStr }}
+  </p>
+</div>
+```
 
-### Computed
+### `isAppIdle`
 
 The plug-in adds a computed value `isAppIdle` to every Vue object.
 
-This value will always be `undefined` if the `options` object has no `store` field.
+It's a shorthand for the current value of `store.state.idleVue.isIdle`; this value will always be `undefined` if the `options` object has no `store` field.
 
-#### Example - Js
+Note that using `isAppIdle` or using the hooks `onIdle` and `onActive` are both different, valid ways of doing the same thing: detecting when your app is idle. You can use either or both of them depending on your needs.
 
-    import IdleVue from 'idle-vue'
+#### Example - `main.js`
 
-    const store = new Vuex.Store({
-      // ...
-    })
+``` js
+import Vue from 'vue'
+import IdleVue from 'idle-vue'
+import Vuex from 'vuex'
 
-    Vue.use(IdleVue, { store })
+const store = new Vuex.Store({
+  // ...
+})
 
-    const vm = new Vue({
-      el: '#app',
-      store,
-      computed: {
-        messageStr() {
-          return this.isAppIdle ? "ZZZ" : "Hello"
-        }
-      }
-    })
+Vue.use(IdleVue, { store })
 
-#### Example - Html
+const vm = new Vue({
+  el: '#app',
+  store,
+  computed: {
+    messageStr() {
+      return this.isAppIdle ? "ZZZ" : "Hello"
+    }
+  }
+})
+```
 
-    <div id=app>
-      <p>
-        {{ messageStr }}
-      </p>
-    </div>
+#### Example - `index.html`
+
+``` html
+<div id=app>
+  <p>
+    {{ messageStr }}
+  </p>
+</div>
+```
 
 ### IdleView
 
 The plug-in also adds a component named `IdleView` (or `idle-view`) to Vue.
 
+`idle-view` is automatically available in every Vue component once `Vue.use(IdleVue, ...)` is called; it can be used without using the `components` parameter.
+
 This component is a default idle overlay with a small "touch the screen" sprite; it has no props and no slots. You may create your own idle overlay by exploiting `isAppIdle`.
 
-#### Example - Js
+This component will *not* be added if the `options` object has no `store` field.
 
-    import IdleVue from 'idle-vue'
+#### Example - `main.js`
 
-    const eventsHub = new Vue()
-    const store = new Vuex.Store({
-      // ...
-    })
+``` js
+import IdleVue from 'idle-vue'
+import Vuex from 'vuex'
 
-    Vue.use(IdleVue, { eventEmitter: eventsHub, store })
+const eventsHub = new Vue()
+const store = new Vuex.Store({
+  // ...
+})
 
-    const vm = new Vue({
-      el: '#app',
-      store,
-      // ...
-    })
+Vue.use(IdleVue, { eventEmitter: eventsHub, store })
 
-#### Example - Html
+const vm = new Vue({
+  el: '#app',
+  store,
+  // ...
+})
+```
 
-    <div id=app>
-      <p>
-        Hello world!
-        ...
-      </p>
-      <idle-view />
-    </div>
+#### Example - `index.html`
+
+``` html
+<div id=app>
+  <p>
+    Hello world!
+    ...
+  </p>
+  <idle-view />
+</div>
+```
 
 ### Options
 
 `idle-vue` accepts the following options when loaded; all of them are facultative, except `store` or `eventEmitter`; they cannot be both omitted:
 
-* __eventEmitter__: The Vue instance through which the `idle-vue` plugin is to send events. The plugin will send `idleVue_onIdle` and `idleVue_onActive` events to this instance; all Vue objects created after the plugin is loaded will run their `onIdle` and `onActive` hooks when `idleVue_onIdle` and `idleVue_onActive` events are sent. Default: `undefined`.
+* __eventEmitter__: The Vue instance through which the `idle-vue` plugin is to send events. The plugin will send `idleVue_onIdle` and `idleVue_onActive` events to this instance; all Vue objects created after the plugin is loaded will run their `onIdle` and `onActive` hooks when `idleVue_onIdle` and `idleVue_onActive` events are sent.
 
 * __store__: The Vuex instance which stores the state of the app (idle or active); this store has a state `idleVue.isIdle` and a mutation `idleVue/IDLE_CHANGED(isIdle)`.
 
-* __idleTime__: The time (in ms) without input before the program is considered idle. For instance, with `idleTime=60000`, the module will emit idle events after 60 seconds of inactivity. Default: `60000`.
+* __idleTime__: The time (in ms) without input before the program is considered idle. For instance, with `idleTime: 40000`, the module will emit idle events after 40 seconds of inactivity. Default value: `60000` (one minute).
 
-* __events__: Events that "break" idleness. Default: `['mousemove', 'keydown', 'mousedown', 'touchstart']`
+* __events__: Events that "break" idleness. Default value: `['mousemove', 'keydown', 'mousedown', 'touchstart']`
 
-* __keepTracking__: Whether you want to track more than once. Default: `true`.
+* __keepTracking__: Whether you want to track more than once. Default value: `true`.
 
-* __startAtIdle__: Start in idle state. Default: `true`.
+* __startAtIdle__: Start in idle state. Default value: `true`.
 
-* __moduleName__: The name of the `vuex` module (if `store` is defined), and the prefix of the emitted events (if `eventEmitter` is defined). Default: `idleVue`.
+* __moduleName__: The name of the `vuex` module (if `store` is defined), and the prefix of the emitted events (if `eventEmitter` is defined). Default value: `idleVue`.
 
 
 :heart: Contribute
