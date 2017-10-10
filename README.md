@@ -61,10 +61,10 @@ const vm = new Vue({
     }
   },
   onIdle() {
-    this.messageStr = "ZZZ"
+    this.messageStr = 'ZZZ'
   },
   onActive() {
-    this.messageStr = "Hello"
+    this.messageStr = 'Hello'
   }
 })
 ```
@@ -105,7 +105,7 @@ const vm = new Vue({
   store,
   computed: {
     messageStr() {
-      return this.isAppIdle ? "ZZZ" : "Hello"
+      return this.isAppIdle ? 'ZZZ' : 'Hello'
     }
   }
 })
