@@ -55,8 +55,10 @@ Vue.use(IdleVue, {
 
 const vm = new Vue({
   el: '#app',
-  data: {
-    messageStr: "Hello"
+  data () {
+    return {
+      messageStr: 'Hello'
+    }
   },
   onIdle() {
     this.messageStr = "ZZZ"
