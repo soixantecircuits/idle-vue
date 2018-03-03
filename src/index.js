@@ -1,10 +1,8 @@
 'use strict'
 
 import IdleJs from 'idle-js'
-import IdleView from './components/Idle'
 
 export default {
-  IdleView,
   install (Vue, options) {
     const {
       eventEmitter,
@@ -48,8 +46,6 @@ export default {
       }
     })
     idle.start()
-
-    Vue.component('IdleView', IdleView)
 
     Vue.mixin({
       data () {
