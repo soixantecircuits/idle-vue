@@ -127,4 +127,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+#PHPStorm config files
+.idea
+
 # End of https://www.gitignore.io/api/windows,osx,linux,node

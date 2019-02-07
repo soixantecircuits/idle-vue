@@ -26,13 +26,11 @@ Vue.use(IdleVue, options)
 
 `Vue.use` is a Vue method that installs the given plugin (here, IdleVue), and passes it the given options.
 
-The above code does three things:
+The above code does two things:
 
 * Add two hooks `onIdle` and `onActive` to all Vue objects
 
 * Add a computed value `isAppIdle` to all Vue objects
-
-* Create an `idle-view` component in every Vue object
 
 ### Hooks
 
@@ -123,18 +121,17 @@ const vm = new Vue({
 
 ### IdleView
 
-The plug-in also adds a component named `IdleView` (or `idle-view`) to Vue.
+The package comes with an example component named `IdleView` (or `idle-view`).
 
-`idle-view` is automatically available in every Vue component once `Vue.use(IdleVue, ...)` is called; it can be used without using the `components` parameter.
+`idle-view` is not automatically included with the plugin. It can be imported as a global component or a dependency within your own component, however it serves best as a working example from which to base your own implementation.
 
 This component is a default idle overlay with a small "touch the screen" sprite; it has no props and no slots. You may create your own idle overlay by exploiting `isAppIdle`.
-
-This component will *not* be added if the `options` object has no `store` field.
 
 #### Example - `main.js`
 
 ``` js
 import IdleVue from 'idle-vue'
+import IdleVueComponent from 'idle-vue/src/components/Idle.vue'
 import Vuex from 'vuex'
 
 const eventsHub = new Vue()
@@ -143,6 +140,7 @@ const store = new Vuex.Store({
 })
 
 Vue.use(IdleVue, { eventEmitter: eventsHub, store })
+Vue.component('idle-view', IdleVueComponent) // Required only to use idle-view component
 
 const vm = new Vue({
   el: '#app',
