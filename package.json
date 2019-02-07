@@ -6,6 +6,7 @@
   "author": "Olivier FAURE <olivier.faure@epitech.eu>",
   "license": "MIT",
   "main": "dist/build.js",
+  "types": "index.d.ts",
   "scripts": {
     "build": "rm -rf dist && node build/build.js",
     "lint": "eslint --ext .js,.vue src"
