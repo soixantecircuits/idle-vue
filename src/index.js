@@ -76,6 +76,11 @@ export default {
         isAppIdle () {
           return store && store.state[moduleName].isIdle
         }
+      },
+      methods: {
+        resetAppIdleTimeout () {
+          idle.lastId = idle.resetTimeout(idle.lastId, idle.settings)
+        }
       }
     })
   }
