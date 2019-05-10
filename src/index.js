@@ -79,7 +79,15 @@ export default {
       },
       methods: {
         resetAppIdleTimeout () {
-          idle.lastId = idle.resetTimeout(idle.lastId, idle.settings)
+          if (idle.lastId) {
+            idle.lastId = idle.resetTimeout(idle.lastId, idle.settings)
+          }
+        },
+        startAppIdleTimeout () {
+          idle.start()
+        },
+        stopAppIdleTimeout () {
+          idle.stop()
         }
       }
     })
