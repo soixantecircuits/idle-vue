@@ -76,6 +76,13 @@ export default {
         isAppIdle () {
           return store && store.state[moduleName].isIdle
         }
+      },
+      methods: {
+        $resetIdle(){
+          idle.stop()
+              .reset()
+              .start()
+        }
       }
     })
   }
