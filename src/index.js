@@ -80,8 +80,8 @@ export default {
       methods: {
         $resetIdle(){
           idle.stop()
-            reset()
-            start();
+              .reset()
+              .start()
         }
       }
     })
