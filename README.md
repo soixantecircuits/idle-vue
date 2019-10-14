@@ -77,6 +77,67 @@ const vm = new Vue({
 </div>
 ```
 
+### Methods
+
+A build in method is extended through the use of the global mixin, allowing you to reset the idle timer from anywhere in your application.
+
+#### Example
+// assumes you are using the plugin method
+
+```html
+<template>
+  <div @click="resetIdleTimer">
+    Click to reset
+  </div>
+</template>
+
+<script>
+  export default {
+    methods: {
+      resetIdleTimer(){
+        this.$resetIdle() // stops timer, resets values to default, starts again
+      }
+    }
+  }
+</script>
+```
+
+#### Use Cases
+
+This can be handy when writing unit tests that rely on the idle timer being reset after an assertion.
+
+```js
+// using jest and vue test utils
+import Vue from 'vue'
+import IdleVue from 'idle-vue'
+import { createLocalVue, shallowMount } from '@vue/test-utils'
+
+const eventEmitter = new Vue()
+
+const idleVueMock = localVue.use(IdleVue, {
+  eventEmitter,
+  idleTime: 1000 // 1/10th of a second
+})
+beforeEach(() => {
+  wrapper = shallowMount(App, {
+    // other plugins
+    idleVueMock
+  })
+  // resetting the timer before each test runs
+  wrapper.vm.$resetIdle()
+})
+
+describe('The idle timer doing what it\'s supposed to', () => {
+  it('Something happened after idle', done => {
+    setTimeout(() => {
+      const yourTestCase = 'something that happened because the timer ran out'
+      expect(yourTestCase).toBe(true)
+      done()
+    }, 1000)
+  })
+})
+```
+
 ### `isAppIdle`
 
 The plug-in adds a computed value `isAppIdle` to every Vue object.
