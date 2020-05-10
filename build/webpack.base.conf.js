@@ -7,7 +7,10 @@ function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
+const nodeEnv = process.env.NODE_ENV
+const isProduction = nodeEnv !== 'development'
 module.exports = {
+  mode: isProduction ? 'production' : 'development',
   entry: {
     app: './src/main.js'
   },
