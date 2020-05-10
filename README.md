@@ -161,6 +161,41 @@ const vm = new Vue({
 </div>
 ```
 
+
+#### Example - init with setting value
+
+``` javascript
+
+import Vue from 'vue'
+import IdleVue from 'idle-vue'
+
+const eventsHub = new Vue()
+
+export default async ( { Vue, store } ) => {
+
+  let idleTime = store.state.settings.idleTime
+  if (idleTime === 0) {
+    // No Lock, Set one year
+    idleTime = 365 * 24 * 60 * 60 * 1000
+  }
+  Vue.use(IdleVue, { eventEmitter: eventsHub, idleTime })
+}
+
+```
+
+#### Example - Change idle value
+
+``` javascript
+
+  let idleTime = this.settings.idleTime
+  if (idleTime === 0) {
+    // No Lock, Set one year
+    idleTime = 365 * 24 * 60 * 60 * 1000
+  }
+  this.changeIdleTime( idleTime)
+
+```
+
 ### Options
 
 `idle-vue` accepts the following options when loaded; all of them are facultative, except `store` or `eventEmitter`; they cannot be both omitted:
