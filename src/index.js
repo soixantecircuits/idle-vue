@@ -78,8 +78,9 @@ export default {
         }
       },
       methods: {
-        changeIdleSettings (settings) {
-          idle.set(settings)
+        changeIdleTime (idleTime) {
+          // ms
+          idle.set({ idle: idleTime })
           idle.stop().reset().start()
         }
       }
