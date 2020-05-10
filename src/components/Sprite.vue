@@ -45,7 +45,7 @@ export default {
     }
   },
   mounted () {
-    let vm = this
+    const vm = this
     this.$nextTick(() => {
       vm.mySprite = new Image()
       vm.mySprite.onload = e => {
@@ -64,13 +64,13 @@ export default {
       this.spriteLoop()
     },
     spriteUpdate () {
-      this.tickCount ++
+      this.tickCount++
       if (this.tickCount > this.ticksPerFrame) {
         this.tickCount = 0
         // If the current frame index is in range
         if (this.frameIndex < this.numberOfFrames - 1) {
         // Go to the next frame
-          this.frameIndex ++
+          this.frameIndex++
         } else {
           this.frameIndex = 0
         }

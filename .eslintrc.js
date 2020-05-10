@@ -4,9 +4,13 @@ module.exports = {
     sourceType: 'module'
   },
   // https://github.com/feross/standard/blob/master/RULES.md
-  extends: 'standard',
+  extends: [
+    'plugin:vue/essential',
+    'standard'
+  ],
   // required to lint *.vue files
   plugins: [
+    'vue',
     'html',
     'promise'
   ],
