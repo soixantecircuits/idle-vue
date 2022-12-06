@@ -108,7 +108,7 @@ export default {
 
 [![Edit Vue Signature Pad Demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/idle-vue3-j9cpug)
 
-:earth_africa: Installation
+:earth_africa: Installation for Vue 2
 ---------------------------
 
     npm install --save idle-vue
