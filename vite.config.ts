@@ -6,9 +6,8 @@ export default defineConfig({
   pack: {
     entry: ["src/index.ts", "src/pinia.ts"],
     dts: true,
-    format: ["esm", "cjs"],
+    format: ["esm"],
     sourcemap: true,
-    exports: true,
   },
   lint: {
     ignorePatterns: ["dist/**"],
