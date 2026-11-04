@@ -24,15 +24,17 @@
   "sideEffects": false,
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
-  "types": "./dist/index.d.cts",
+  "types": "./dist/index.d.mts",
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.mts"
     },
     "./pinia": {
       "import": "./dist/pinia.mjs",
-      "require": "./dist/pinia.cjs"
+      "require": "./dist/pinia.cjs",
+      "types": "./dist/pinia.d.mts"
     },
     "./package.json": "./package.json"
   },
@@ -44,7 +46,7 @@
     "build": "vp pack",
     "test": "vp test",
     "check": "vp check",
-    "prepublishOnly": "vp run build"
+    "prepublishOnly": "vp pack"
   },
   "dependencies": {
     "idle-js": "file:../idle-js"
@@ -75,5 +77,8 @@
       "version": "11.8.0",
       "onFail": "download"
     }
+  },
+  "engines": {
+    "node": "^22.18.0 || ^24.11.0 || >=26.0.0"
   }
 }
