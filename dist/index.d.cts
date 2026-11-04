@@ -1,0 +1,2 @@
+import { a as UseIdleOptions, c as setSharedIdle, i as IdleVue, l as useIdle, n as IdleEventName, o as UseIdleReturn, r as IdlePluginOptions, s as getSharedIdle, t as INJECTION_KEY, u as useSharedIdle } from "./useIdle-BBxrgb63.cjs";
+export { INJECTION_KEY, type IdleEventName, type IdlePluginOptions, IdleVue, type UseIdleOptions, type UseIdleReturn, getSharedIdle, setSharedIdle, useIdle, useSharedIdle };
