@@ -45,7 +45,9 @@ export default {
         store && store.commit(`${moduleName}/IDLE_CHANGED`, false)
       }
     })
-    idle.start()
+    if (typeof window !== 'undefined') {
+      idle.start()
+    }
 
     Vue.mixin({
       data () {
@@ -75,6 +77,17 @@ export default {
       computed: {
         isAppIdle () {
           return store && store.state[moduleName].isIdle
+        }
+      },
+      methods: {
+        startAppIdleTimeout () { return idle.start() },
+        stopAppIdleTimeout () { return idle.stop() },
+        resetAppIdleTimeout () { return idle.reset() },
+        $resetIdle () { return idle.stop().reset().start() },
+        setIdleTime (ms) {
+          if (typeof idle.set === 'function') idle.set({ idle: ms })
+          else idle.settings.idle = ms
+          return idle
         }
       }
     })

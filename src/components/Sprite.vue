@@ -57,11 +57,12 @@ export default {
   methods: {
     spriteInit (img) {
       this.canvas = this.$el.querySelector(`#${this.spriteId}`)
+      if (!this.canvas) return
       this.ctx = this.canvas.getContext('2d')
+      if (!this.ctx || typeof this.ctx.clearRect !== 'function') return
       this.ticksPerFrame = this.spriteSpeed
       this.frameLength = img.width
       this.numberOfFrames = img.width / this.spriteW
-      this.spriteLoop()
     },
     spriteUpdate () {
       this.tickCount ++
@@ -77,6 +78,7 @@ export default {
       }
     },
     spriteRender () {
+      if (!this.ctx || typeof this.ctx.clearRect !== 'function') return
       this.ctx.clearRect(0, 0, this.spriteW, this.spriteH)
       // Draw the animation
       const toDraw = this.frameIndex * this.spriteW
@@ -87,16 +89,26 @@ export default {
       )
     },
     spriteLoop () {
+      this.stop()
       this.animationFrameId = window.requestAnimationFrame(this.spriteLoop)
       this.spriteUpdate()
       this.spriteRender()
     },
     stop () {
-      window.cancelAnimationFrame(this.animationFrameId)
+      if (this.animationFrameId !== -1) {
+        window.cancelAnimationFrame(this.animationFrameId)
+        this.animationFrameId = -1
+      }
     },
     play () {
-      this.spriteLoop()
+      if (this.animationFrameId === -1) this.spriteLoop()
     }
+  },
+  beforeDestroy () {
+    this.stop()
+  },
+  destroyed () {
+    this.stop()
   }
 }
 </script>
